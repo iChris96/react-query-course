@@ -20,6 +20,7 @@ async function updatePost(postId) {
     `https://jsonplaceholder.typicode.com/postId/${postId}`,
     { method: "PATCH", data: { title: "REACT QUERY FOREVER!!!!" } }
   );
+
   return response.json();
 }
 
@@ -28,6 +29,7 @@ export function PostDetail({ post }) {
   const { data, isLoading, isError, error } = useQuery(['comments', post.id], () => fetchComments(post.id));
 
   const deleteMutation = useMutation((postId) => deletePost(postId));
+  const updateMutation = useMutation((postId) => updatePost(postId));
 
   if (isLoading) return <h1>Loading...</h1>
 
@@ -36,10 +38,14 @@ export function PostDetail({ post }) {
   return (
     <>
       <h3 style={{ color: "blue" }}>{post.title}</h3>
-      <button onClick={() => deleteMutation.mutate(post.id)}>Delete</button> <button>Update title</button>
+      <button onClick={() => deleteMutation.mutate(post.id)}>Delete</button> 
+      <button onClick={() => updateMutation.mutate(post.id)}>Update title</button>
       {deleteMutation.isLoading && (<p style={{color: 'blue'}}>loading post delete...</p>)}
       {deleteMutation.isError && (<p style={{color: 'red'}}>error deleting post...</p>)}
       {deleteMutation.isSuccess && (<p style={{color: 'green'}}>success deleting post...</p>)}
+      {updateMutation.isLoading && (<p style={{color: 'blue'}}>loading post update...</p>)}
+      {updateMutation.isError && (<p style={{color: 'red'}}>error updating post...</p>)}
+      {updateMutation.isSuccess && (<p style={{color: 'green'}}>success updating post...</p>)}
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data.map((comment) => (
