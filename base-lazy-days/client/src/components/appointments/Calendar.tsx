@@ -8,12 +8,19 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { TiArrowLeftThick, TiArrowRightThick } from 'react-icons/ti';
+import { useQueryClient } from 'react-query';
+import { queryKeys } from 'react-query/constants';
 
 import { UserAppointments } from '../user/UserAppointments';
 import { DateBox } from './DateBox';
-import { useAppointments } from './hooks/useAppointments';
+import { getNewMonthYear } from './hooks/monthYear';
+import {
+  getAppointments,
+  useAppointments,
+  usePrefetchAppointments,
+} from './hooks/useAppointments';
 
 export function Calendar(): ReactElement {
   const currentDate = dayjs();
@@ -25,6 +32,18 @@ export function Calendar(): ReactElement {
     showAll,
     setShowAll,
   } = useAppointments();
+
+  // usePrefetchAppointments(monthYear);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const nextmonthYear = getNewMonthYear(monthYear, +1);
+    queryClient.prefetchQuery(
+      [queryKeys.appointments, nextmonthYear.year, nextmonthYear.month],
+      () => getAppointments(nextmonthYear.year, nextmonthYear.month),
+    );
+  }, [monthYear, queryClient]);
 
   return (
     <Box>
