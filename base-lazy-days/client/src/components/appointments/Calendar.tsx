@@ -16,11 +16,7 @@ import { queryKeys } from 'react-query/constants';
 import { UserAppointments } from '../user/UserAppointments';
 import { DateBox } from './DateBox';
 import { getNewMonthYear } from './hooks/monthYear';
-import {
-  getAppointments,
-  useAppointments,
-  usePrefetchAppointments,
-} from './hooks/useAppointments';
+import { getAppointments, useAppointments } from './hooks/useAppointments';
 
 export function Calendar(): ReactElement {
   const currentDate = dayjs();

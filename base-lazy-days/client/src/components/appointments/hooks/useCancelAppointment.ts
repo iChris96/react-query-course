@@ -1,6 +1,6 @@
 import { Appointment } from '../../../../../shared/types';
-import { axiosInstance } from '../../../axiosInstance';
-import { queryKeys } from '../../../react-query/constants';
+// import { axiosInstance } from '../../../axiosInstance';
+// import { queryKeys } from '../../../react-query/constants';
 import { useCustomToast } from '../../app/hooks/useCustomToast';
 
 // for when server call is needed

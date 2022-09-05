@@ -30,7 +30,21 @@ interface UseUser {
 export function useUser(): UseUser {
   const queryClient = useQueryClient();
   // TODO: call useQuery to update user data from server
-  const { data: user } = useQuery(queryKeys.user, () => getUser(user));
+  const { data: user } = useQuery(queryKeys.user, () => getUser(user), {
+    initialData: getStoredUser,
+    onSuccess: (data: User | null) => {
+      if (!data) {
+        clearStoredUser();
+        return;
+      }
+
+      setStoredUser(data);
+    },
+    onError: (err) => {
+      clearStoredUser();
+      updateUser(null);
+    },
+  });
 
   // meant to be called from useAuth
   function updateUser(newUser: User): void {
