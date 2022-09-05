@@ -12,7 +12,9 @@ async function getTreatments(): Promise<Treatment[]> {
 
 export function useTreatments(): Treatment[] {
   // TODO: get data from server via useQuery
-  const { data = [] } = useQuery(queryKeys.treatments, getTreatments);
+  const { data = [] } = useQuery(queryKeys.treatments, getTreatments, {
+    staleTime: 3000,
+  });
 
   return data;
 }

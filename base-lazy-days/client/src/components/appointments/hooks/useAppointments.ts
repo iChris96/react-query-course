@@ -80,6 +80,7 @@ export function useAppointments(): UseAppointments {
     () => getAppointments(monthYear.year, monthYear.month),
     {
       select: showAll ? undefined : selectFn,
+      // refetchInterval: 9000,
     },
   );
 
