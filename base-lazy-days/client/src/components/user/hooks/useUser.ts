@@ -34,6 +34,7 @@ export function useUser(): UseUser {
     initialData: getStoredUser,
     onSuccess: (data: User | null) => {
       if (!data) {
+        // they will no data if token expires of we run setQueryData with a null value
         clearStoredUser();
         return;
       }
@@ -57,6 +58,7 @@ export function useUser(): UseUser {
   function clearUser() {
     // TODO: reset user to null in query cache
     queryClient.setQueryData(queryKeys.user, null);
+    queryClient.removeQueries('user-appointments');
   }
 
   return { user, updateUser, clearUser };
