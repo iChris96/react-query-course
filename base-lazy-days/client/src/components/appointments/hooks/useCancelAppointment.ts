@@ -23,7 +23,7 @@ export function useCancelAppointment(): (appointment: Appointment) => void {
     {
       onSuccess: () => {
         toast({ title: 'Appointment removed!', status: 'success' });
-        queryClient.invalidateQueries([queryKeys.appointments, queryKeys.user]);
+        queryClient.invalidateQueries([queryKeys.appointments]);
       },
     },
   );
