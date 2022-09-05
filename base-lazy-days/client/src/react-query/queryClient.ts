@@ -23,5 +23,8 @@ export const queryClient = new QueryClient({
     queries: {
       onError: queryErrorHandler,
     },
+    mutations: {
+      onError: queryErrorHandler,
+    },
   },
 });
