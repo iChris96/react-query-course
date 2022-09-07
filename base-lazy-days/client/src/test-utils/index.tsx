@@ -1,10 +1,24 @@
+/* eslint-disable no-console */
 import { render, RenderResult } from '@testing-library/react';
 import { ReactElement } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
+
+import { generateQueryClient } from '../react-query/queryClient';
 // import { defaultQueryClientOptions } from '../react-query/queryClient';
 
-const generateQueryClient = () => {
-  return new QueryClient();
+setLogger({
+  log: console.log,
+  warn: console.warn,
+  error: () => {
+    // swallow errors without printin out
+  },
+});
+
+const generateTestQueryClient = () => {
+  const client = generateQueryClient();
+  const options = client.getDefaultOptions();
+  options.queries = { ...options.queries, retry: false };
+  return client;
 };
 // // from https://tkdodo.eu/blog/testing-react-query#for-custom-hooks
 // export const createQueryClientWrapper = (): React.FC => {
@@ -18,7 +32,7 @@ export const renderWithQueryClient = (
   ui: ReactElement,
   client?: QueryClient,
 ): RenderResult => {
-  const queryClient = client ?? generateQueryClient();
+  const queryClient = client ?? generateTestQueryClient();
 
   return render(
     <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
