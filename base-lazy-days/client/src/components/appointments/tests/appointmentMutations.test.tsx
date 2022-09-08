@@ -42,9 +42,25 @@ test('Reserve appointment', async () => {
 });
 
 test('Cancel appointment', async () => {
-  // your test here
-  //
-  // const cancelButtons = await screen.findAllByRole('button', {
-  //   name: /cancel appointment/i,
-  //  });
+  // render
+  renderWithQueryClient(
+    <MemoryRouter>
+      <Calendar />
+    </MemoryRouter>,
+  );
+
+  // find the cancel button for an appointment
+  const cancelButtons = await screen.findAllByRole('button', {
+    name: /cancel appointment/i,
+  });
+  fireEvent.click(cancelButtons[0]);
+
+  // expect the toast message for removed appointment
+  const alertToast = await screen.findByRole('alert');
+  expect(alertToast).toHaveTextContent('removed');
+
+  // // close alert to keep state clean and wait for it to disappear
+  const alertCloseButton = screen.getByRole('button', { name: 'Close' });
+  alertCloseButton.click();
+  await waitForElementToBeRemoved(alertToast);
 });
